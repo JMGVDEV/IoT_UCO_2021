@@ -27,9 +27,8 @@ export class AppController {
     try {
       const response = await this.timeService.findDate(data).toPromise();
       const date = this.timeService.formatDate(response.data);
-
       this.client.emit<string>('jsonstatus', response.status);
-      this.client.emit<string>('output', date);
+      await this.timeService.sendDateToMicrocontroller(date).toPromise();
     } catch (err) {
       this.client.emit<string>(
         'statusrequest',

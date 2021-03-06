@@ -1,6 +1,7 @@
 import { HttpService, Injectable } from '@nestjs/common';
 import { AxiosResponse } from 'axios';
 import { Observable } from 'rxjs';
+import { microcontrollerConfig } from 'src/microcontroller.config';
 import { Time } from './time';
 
 @Injectable()
@@ -36,5 +37,22 @@ export class DateService {
     );
 
     return date;
+  }
+
+  /**
+   * Sends the formatted date as a response to the ESP8266 server so it can publish
+   * the result in the output topic
+   * @param date The formatted date to be send back to the ESP8266
+   */
+  public sendDateToMicrocontroller(
+    date: string,
+  ): Observable<AxiosResponse<any>> {
+    const response = `response=${date}`;
+
+    return this.http.post(`${microcontrollerConfig.url}/response`, response, {
+      headers: {
+        'content-type': 'application/x-www-form-urlencoded',
+      },
+    });
   }
 }
