@@ -19,9 +19,8 @@ namespace TimeZoneClockIOT.Application.Tasks
         private readonly ITimeZoneService _timeZoneService;
         private readonly IMqttAdapter _mqttAdapter;
         private readonly ApplicationSettings _settings;
-        private static readonly string TOPIC_INPUT = "input";
-        private static readonly string TOPIC_OUTPUT = "output";
-        private static readonly string TOPIC_ALIVE = "alive";
+        private static readonly string TOPIC_INPUT = "BackendInput";
+        private static readonly string TOPIC_OUTPUT = "BackendOutput";
         private static readonly string TOPIC_JSONSTATUS = "JsonStatus";
         private static readonly string TOPIC_STATUSREQUEST= "StatusRequest";
 
@@ -46,11 +45,6 @@ namespace TimeZoneClockIOT.Application.Tasks
                 .WithCredentials(_settings.MqttClientSettings.User, _settings.MqttClientSettings.Password)
                 .Build();
             await mqttClient.ConnectAsync(options, stoppingToken);
-
-            if (mqttClient.IsConnected)
-            {
-                await _mqttAdapter.SendMessage("Succesful Connection", TOPIC_ALIVE);
-            }
 
             await mqttClient.SubscribeAsync(TOPIC_INPUT);
 
