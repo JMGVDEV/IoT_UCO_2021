@@ -6,7 +6,7 @@
 
 //Credenciales de la red local.
 //Nombre de la red y la contraseña.
-const char* ssid = "DARKSOUL";
+const char* ssid = "*******";
 const char* password =  "******";
 
 
