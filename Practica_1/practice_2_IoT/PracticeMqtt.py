@@ -13,8 +13,9 @@ import time, urllib.request, json
 #Se suscribe al tópico input
 def  conexionEstablecida(client, userdata, flags, rc):
         print("El cliente ha establecido una conexión")
+        client.publish("estado", "Conexión exitosa al broker de mensajeria")
         client.publish("alive", "Conexión exitosa al broker de mensajeria")
-        client.subscribe("input/#")
+        client.subscribe("inputData/#")
         
 
 #Se declara una funcion que sera ejecutada por la líbreria MQTT cuando se recibe un mensaje
@@ -66,8 +67,9 @@ time.sleep(1)
 #Se cambia la fecha de tipo string a tipo datetime y posteormente se le asigna el formato.
 def worldTimeApi(zonaHoraria):
 
+    
+    url = "http://worldtimeapi.org/api/timezone/" + zonaHoraria
     try:
-        url = "http://worldtimeapi.org/api/timezone/" + zonaHoraria
         response = urllib.request.urlopen(url)
         loadData = json.loads(response.read())
         loadDataformat = loadData['datetime']
